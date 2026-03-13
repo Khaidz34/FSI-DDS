@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: fsi-dds-backend
+    env: node
+    plan: free
+    region: singapore
+    buildCommand: cd backend && npm install --production
+    startCommand: cd backend && npm run start:sqlite
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_PATH
+        value: /opt/render/project/src/data/dining.db
+      - key: BACKUP_ENABLED
+        value: true
+      - key: PORT
+        value: 10000
+    disk:
+      name: fsi-dds-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1
